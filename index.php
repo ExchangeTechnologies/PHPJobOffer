@@ -1,5 +1,4 @@
 <?php
-
 //директория ядра фреймворка
 $frameworkFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'framework' . DIRECTORY_SEPARATOR . 'YiiBase.php';
 
@@ -26,10 +25,10 @@ require_once($frameworkFile);
 //небольшой хак для автокомплита в шторме
 class Yii extends YiiBase
 {
-	/**
+	*
 	 * @static
 	 * @return MyCWebApplication
-	 */
+	 
 	public static function app()
 	{
 		return parent::app();

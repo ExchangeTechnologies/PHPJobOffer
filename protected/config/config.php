@@ -6,8 +6,9 @@ return CMap::mergeArray(
 		'components' => array(
 			'urlManager' => array(
 				'urlFormat' => 'path',
-				'showScriptName' => false,
+				'showScriptName' => true,
 				'rules' => array(
+					'main'=> 'main',
 					'gii' => 'gii',
 					'gii/<controller:\w+>' => 'gii/<controller>',
 					'gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
