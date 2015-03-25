@@ -12,6 +12,15 @@
  */
 class MainServers extends CActiveRecord
 {
+    
+  protected function instantiate($attributes)
+	{
+		$class = 'MainServers' . $attributes['server_type'] . 'Ext';
+    $model=new $class(null);
+		
+		return $model;
+	}
+  
 	/**
 	 * @return string the associated database table name
 	 */

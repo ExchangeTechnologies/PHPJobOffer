@@ -40,7 +40,7 @@ class Servertype1Ext extends CComponent
 				'106' => 'bad',
 			),
 		);
-
+    
 		return (isset($returns[$params->host]) && isset($returns[$params->host][$account])) ? $returns[$params->host][$account] : 'error';
 	}
 }

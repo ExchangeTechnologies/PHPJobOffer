@@ -11,7 +11,18 @@
  */
 class MainAccounts extends CActiveRecord
 {
-	/**
+  public $group_name;  
+  public $server_name;
+  public $page_size;
+  public $validation_search;  
+  public $server_type;
+  
+  public function getValidation() {
+    return $this->group->server->check($this->server_account);
+  }
+
+
+  /**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
@@ -29,9 +40,10 @@ class MainAccounts extends CActiveRecord
 		return array(
 			array('server_account, group_id', 'required'),
 			array('server_account, group_id', 'numerical', 'integerOnly' => true),
+
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, server_account, group_id', 'safe', 'on' => 'search'),
+			array('id, server_account, group_id, group_name, server_name, validation_search', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -75,13 +87,42 @@ class MainAccounts extends CActiveRecord
 
 		$criteria = new CDbCriteria;
 
-		$criteria->with = 'group.server';
-		$criteria->compare('id', $this->id);
-		$criteria->compare('server_account', $this->server_account);
+		$criteria->with = array('group', 'group.server');//'group.server';
+		$criteria->compare('id', $this->id, true);
+		$criteria->compare('server_account', $this->server_account, true);
 		$criteria->compare('group_id', $this->group_id);
+    $criteria->compare('group.name', $this->group_name, true);
+    $criteria->compare('server.name', $this->server_name, true);
+    $criteria->together = true;
 
-		return new CActiveDataProvider($this, array(
-			'criteria' => $criteria,
+    $custom_criteria = array('Validation' => $this->validation_search);
+    
+    $sort = new CSort();
+    $sort->attributes = array(
+        'server_account' => array(
+            'asc' => 't.id ASC',
+            'desc' => 't.id DESC',
+        ),
+        'group_name' => array(
+            'asc' => 'group.name ASC',
+            'desc' => 'group.name DESC',
+        ),
+        'server_name' => array(
+            'asc' => 'server.name ASC',
+            'desc' => 'server.name DESC',
+        ),      
+        'validation_search' => true,
+        '*',
+    );
+
+		
+		return new CustomDataProvider($this, array(
+      'criteria' => $criteria,
+      'customCriteria' => $custom_criteria,
+      'sort' => $sort,
+      'pagination'=>array(
+        'pageSize' => Yii::app()->user->getState('page_size', Yii::app()->params['defaultPageSize']),
+      ),              
 		));
 	}
 
