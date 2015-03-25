@@ -7,5 +7,5 @@
  */
 class MyCWebApplication extends CWebApplication
 {
-
+	echo "hello world!";
 }

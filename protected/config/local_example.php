@@ -18,5 +18,6 @@ return array(
 	'params' => array(
 		'debugMode' => false,
 		'debugTraceLevel' => 3,
+		'defaultPageSize'=>5,
 	),
 );
