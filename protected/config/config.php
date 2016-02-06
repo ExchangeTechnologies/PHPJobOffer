@@ -11,6 +11,9 @@ return CMap::mergeArray(
 					'gii' => 'gii',
 					'gii/<controller:\w+>' => 'gii/<controller>',
 					'gii/<controller:\w+>/<action:\w+>' => 'gii/<controller>/<action>',
+
+					// https://github.com/yiisoft/yii/issues/3216#issuecomment-34585743
+					'<controller:\w+>/<action:\w+>' => '<controller>/<action>'
 				),
 			),
 			'Servertype1Ext' => array(

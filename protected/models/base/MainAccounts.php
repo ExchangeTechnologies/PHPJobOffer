@@ -31,7 +31,7 @@ class MainAccounts extends CActiveRecord
 			array('server_account, group_id', 'numerical', 'integerOnly' => true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, server_account, group_id', 'safe', 'on' => 'search'),
+			array('id, server_account, group_id,server_name', 'safe', 'on' => 'search'),
 		);
 	}
 
@@ -69,9 +69,10 @@ class MainAccounts extends CActiveRecord
 	 * @return CActiveDataProvider the data provider that can return the models
 	 * based on the search/filter conditions.
 	 */
-	public function search()
+	public function search($pageSize)
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
+
 
 		$criteria = new CDbCriteria;
 
@@ -79,9 +80,17 @@ class MainAccounts extends CActiveRecord
 		$criteria->compare('id', $this->id);
 		$criteria->compare('server_account', $this->server_account);
 		$criteria->compare('group_id', $this->group_id);
+		$criteria->compare('server.name',$this->server_name);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
+			'pagination' => ['pageSize' => $pageSize],
+			'sort' => array(
+				'attributes'=>array(
+				    'group_id'=>'group.name',
+					'server_name' => 'server.name'
+				)
+			)
 		));
 	}
 
@@ -97,4 +106,6 @@ class MainAccounts extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+
+	public $server_name;
 }
